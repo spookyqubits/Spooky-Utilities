@@ -1,0 +1,272 @@
+<div id="ghost-numbers-preview">
+  <style>
+    #ghost-numbers-preview{padding:14px 0;color-scheme:light}
+    #ghost-numbers-preview .gn-app{--gn-paper:#faf7f1;--gn-white:#fffefa;--gn-ink:#202435;--gn-muted:#535969;--gn-line:#bec5d1;--gn-red:#b41524;--gn-blue:#154c9c;--gn-purple:#6c2f9e;--gn-gold:#8c6000;--gn-green:#1d7a3a;--gn-blue-tint:#eef3fb;--gn-purple-tint:#f5eefa;max-width:430px;margin:auto;border:3px solid var(--gn-ink);border-radius:27px;overflow:hidden;background:var(--gn-paper);color:var(--gn-ink);font-family:"Avenir Next",Avenir,system-ui,-apple-system,sans-serif;box-shadow:0 12px 28px #2024351f}
+    #ghost-numbers-preview .gn-app *{box-sizing:border-box}
+    #ghost-numbers-preview .gn-header{padding:13px 17px 15px;background:var(--gn-red);color:var(--gn-white);border-bottom:4px solid var(--gn-ink)}
+    #ghost-numbers-preview .gn-eyebrow{font:700 11px/1.5 ui-monospace,monospace;letter-spacing:1.2px;padding-right:90px;margin-bottom:5px}
+    #ghost-numbers-preview .gn-title{font-size:30px;font-weight:850;line-height:1.1;letter-spacing:-1.1px;margin:0;color:var(--gn-white)}
+    #ghost-numbers-preview .gn-title span{color:var(--gn-white)}
+    #ghost-numbers-preview .gn-mode{display:grid;grid-template-columns:1fr 1fr;gap:7px;padding:12px 15px 0}
+    #ghost-numbers-preview .gn-button{border:2px solid var(--gn-line);border-radius:11px;background:var(--gn-white);color:var(--gn-ink);min-height:48px;padding:10px 12px;font:750 13px/1.4 "Avenir Next",Avenir,system-ui,sans-serif;touch-action:manipulation}
+    #ghost-numbers-preview .gn-button[aria-pressed=true]{background:var(--gn-ink);border-color:var(--gn-ink);color:var(--gn-white)}
+    #ghost-numbers-preview .gn-mode .gn-button{border-color:var(--gn-red);color:var(--gn-red)}
+    #ghost-numbers-preview .gn-mode .gn-button[aria-pressed=true]{background:var(--gn-red);color:var(--gn-white)}
+    #ghost-numbers-preview .gn-button:hover:enabled{border-color:var(--gn-red)}
+    #ghost-numbers-preview .gn-button:disabled{opacity:.45}
+    #ghost-numbers-preview .gn-primary{background:var(--gn-red);border-color:var(--gn-red);color:var(--gn-white);min-height:52px;box-shadow:0 3px 0 #7d0e18;font-size:15px}
+    #ghost-numbers-preview .gn-task{padding:14px 17px 0}
+    #ghost-numbers-preview .gn-kicker{font-size:11px;font-weight:750;color:var(--gn-red);line-height:1.5;margin-bottom:5px}
+    #ghost-numbers-preview .gn-task h3{font-size:19px;letter-spacing:-.5px;margin:0 0 6px;line-height:1.3}
+    #ghost-numbers-preview .gn-task p{font-size:12px;line-height:1.65;margin:0;color:var(--gn-muted)}
+    #ghost-numbers-preview .gn-equation{display:flex;justify-content:center;align-items:center;gap:11px;flex-wrap:wrap;font-size:21px;font-weight:750;line-height:1.5;margin:12px 15px 2px;padding:7px 5px;background:var(--gn-white);border-radius:11px;min-height:35px;font-variant-numeric:tabular-nums}
+    #ghost-numbers-preview .gn-from{color:var(--gn-blue)}
+    #ghost-numbers-preview .gn-operation{font-size:16px;color:var(--gn-ink)}
+    #ghost-numbers-preview .gn-to{color:var(--gn-purple)}
+    #ghost-numbers-preview .gn-viewbar{display:flex;gap:8px;margin:9px 15px 0}
+    #ghost-numbers-preview .gn-viewbar .gn-button{flex:1;min-height:44px;font-size:12px;padding:8px 12px;border-color:var(--gn-blue);color:var(--gn-blue)}
+    #ghost-numbers-preview .gn-viewbar .gn-button[aria-pressed=true]{background:var(--gn-blue);color:var(--gn-white)}
+    #ghost-numbers-preview .gn-plot{margin:0 12px}
+    #ghost-numbers-preview .gn-plane{display:block;width:100%;touch-action:manipulation;user-select:none}
+    #ghost-numbers-preview .gn-plane[data-view="3d"]{touch-action:none;cursor:grab}
+    #ghost-numbers-preview .gn-plane[data-view="3d"]:active{cursor:grabbing}
+    #ghost-numbers-preview .gn-plane text{font-family:"Avenir Next",Avenir,system-ui,sans-serif;font-size:12px;fill:var(--gn-ink)}
+    #ghost-numbers-preview .gn-plane .gn-axis-title{fill:var(--gn-ink);font-weight:750;font-size:12px}
+    #ghost-numbers-preview .gn-plot-caption{font-size:11px;line-height:1.6;text-align:center;color:var(--gn-ink);margin:-2px 15px 9px}
+    #ghost-numbers-preview .gn-feedback{font-size:13px;line-height:1.75;margin:8px 15px 12px;padding:11px 13px;background:var(--gn-white);border-left:4px solid var(--gn-purple);border-radius:0 9px 9px 0}
+    #ghost-numbers-preview .gn-feedback[data-correct=true]{border-left-color:var(--gn-green)}
+    #ghost-numbers-preview .gn-desk{background:var(--gn-white);border-top:3px solid var(--gn-ink);border-radius:21px 21px 0 0;padding:14px 15px max(17px,env(safe-area-inset-bottom))}
+    #ghost-numbers-preview .gn-fields{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+    #ghost-numbers-preview .gn-fields label{display:grid;gap:6px;font-size:11px;color:var(--gn-muted);line-height:1.5}
+    #ghost-numbers-preview .gn-fields input{font:700 18px/1.4 "Avenir Next",Avenir,system-ui,sans-serif;min-height:48px;width:100%;min-width:0;border:2px solid var(--gn-line);border-radius:9px;background:var(--gn-paper);color:var(--gn-ink);padding:9px 12px}
+    #ghost-numbers-preview .gn-fields label:first-child{color:var(--gn-blue);font-weight:700}
+    #ghost-numbers-preview .gn-fields label:last-child{color:var(--gn-purple);font-weight:700}
+    #ghost-numbers-preview #gn-coordinate-a{border-color:var(--gn-blue);color:var(--gn-blue);background:var(--gn-blue-tint)}
+    #ghost-numbers-preview #gn-coordinate-b{border-color:var(--gn-purple);color:var(--gn-purple);background:var(--gn-purple-tint)}
+    #ghost-numbers-preview .gn-free-ops{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-bottom:12px}
+    #ghost-numbers-preview .gn-free-ops .gn-button{min-width:0;padding:9px 5px;font-size:16px;min-height:49px}
+    #ghost-numbers-preview .gn-free-ops .gn-button[data-kind=add]{border-color:var(--gn-blue);color:var(--gn-blue);background:var(--gn-blue-tint)}
+    #ghost-numbers-preview .gn-free-ops .gn-button[data-kind=multiply]{border-color:var(--gn-purple);color:var(--gn-purple);background:var(--gn-purple-tint)}
+    #ghost-numbers-preview .gn-free-ops .gn-button[data-kind=add][aria-pressed=true]{background:var(--gn-blue);color:var(--gn-white)}
+    #ghost-numbers-preview .gn-free-ops .gn-button[data-kind=multiply][aria-pressed=true]{background:var(--gn-purple);color:var(--gn-white)}
+    #ghost-numbers-preview .gn-free-ops small{display:block;font-size:11px;font-weight:500}
+    #ghost-numbers-preview .gn-actions{display:flex;gap:9px;flex-wrap:wrap}
+    #ghost-numbers-preview .gn-actions .gn-button{flex:1}
+    #ghost-numbers-preview .gn-secondary-actions{display:flex;gap:9px;margin-top:10px}
+    #ghost-numbers-preview .gn-secondary-actions .gn-button{flex:1;font-size:11px;min-height:44px}
+    #ghost-numbers-preview .gn-error{font-size:12px;line-height:1.7;color:var(--gn-red);margin:7px 0}
+    #ghost-numbers-preview .gn-details{margin-top:9px;font-size:12px;line-height:1.75;color:var(--gn-muted)}
+    #ghost-numbers-preview .gn-details summary{font-size:11px;min-height:44px;padding:11px 0}
+    #ghost-numbers-preview .gn-details p{margin:7px 0 12px}
+    #ghost-numbers-preview .gn-details a{color:var(--gn-blue);text-underline-offset:3px}
+    #ghost-numbers-preview .gn-summary{margin:13px 15px;font-size:12px;line-height:1.75}
+    #ghost-numbers-preview .gn-summary table{border-collapse:collapse;width:100%}
+    #ghost-numbers-preview .gn-summary th,#ghost-numbers-preview .gn-summary td{text-align:left;padding:8px 4px;border-bottom:1px solid var(--gn-line)}
+    #ghost-numbers-preview .gn-summary th{font-size:11px;color:var(--gn-muted)}
+    #ghost-numbers-preview [hidden]{display:none!important}
+    #ghost-numbers-preview .gn-live{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    @media(max-width:360px){#ghost-numbers-preview .gn-title{font-size:28px}#ghost-numbers-preview .gn-task h3{font-size:18px}#ghost-numbers-preview .gn-equation{font-size:19px;gap:7px}#ghost-numbers-preview .gn-operation{font-size:14px}#ghost-numbers-preview .gn-button{font-size:12px;padding:10px 8px}#ghost-numbers-preview .gn-primary{font-size:14px}}
+    @media(prefers-reduced-motion:reduce){#ghost-numbers-preview *{animation:none!important;transition:none!important}}
+    html,body{background:#faf7f1!important;color-scheme:light}
+  </style>
+  <section class="gn-app" aria-label="Ghost Numbers complex-number game">
+    <header class="gn-header"><div class="gn-eyebrow">SPOOKYQUBITS · UTILITY 02</div><h2 class="gn-title">Ghost Numbers<span>.</span></h2></header>
+    <div class="gn-mode" role="group" aria-label="Play mode"><button type="button" class="gn-button cursor-interaction" data-mode="missions" aria-pressed="true">Missions</button><button type="button" class="gn-button cursor-interaction" data-mode="free" aria-pressed="false">Free Play</button></div>
+    <div class="gn-task"><div class="gn-kicker"></div><h3></h3><p></p></div>
+    <div class="gn-equation" aria-label="Current calculation"><span class="gn-from"></span><span class="gn-operation"></span><span>=</span><span class="gn-to">?</span></div>
+    <div class="gn-viewbar" role="group" aria-label="View of the complex plane"><button type="button" class="gn-button cursor-interaction" data-view="3d" aria-pressed="true">3D View</button><button type="button" class="gn-button cursor-interaction" data-view="flat" aria-pressed="false">Flat View</button></div>
+    <div class="gn-plot"><svg class="gn-plane" role="img" aria-label="Complex plane with a ghost marking one complex number" xmlns="http://www.w3.org/2000/svg"></svg></div>
+    <div class="gn-plot-caption"></div>
+    <div class="gn-feedback" role="status" aria-live="polite" hidden></div>
+    <div class="gn-summary" hidden></div>
+    <section class="gn-desk" aria-label="Number controls">
+      <div class="gn-free-ops" role="group" aria-label="Operation" hidden></div>
+      <div class="gn-fields"><label><span class="gn-a-label">Your guess · real part a</span><input type="number" inputmode="numeric" id="gn-coordinate-a" min="-3" max="3" step="1" aria-label="Real coordinate a"></label><label><span class="gn-b-label">Your guess · i coefficient b</span><input type="number" inputmode="numeric" id="gn-coordinate-b" min="-3" max="3" step="1" aria-label="Imaginary coefficient b"></label></div>
+      <div class="gn-error" role="alert" hidden></div>
+      <div class="gn-actions"><button type="button" class="gn-button gn-primary cursor-interaction" data-action="run" disabled>Play the move →</button><button type="button" class="gn-button gn-primary cursor-interaction" data-action="next" hidden>Next mission →</button></div>
+      <div class="gn-secondary-actions" hidden><button type="button" class="gn-button cursor-interaction" data-action="undo" disabled>Undo move</button><button type="button" class="gn-button cursor-interaction" data-action="reset">Start at 2 + i</button></div>
+      <details class="gn-details"><summary>What this move means</summary><p class="gn-math"></p><p><b>One number, two coordinates.</b> In a + bi, a is the real part and b is the imaginary part. The point is (a, b). “Imaginary” is a historical name; it does not mean made-up. The number i is defined by i² = −1.</p><p><b>3D View changes the camera.</b> Real and imaginary coordinates stay on one plane. Drag to tilt it, or choose Flat View to see lengths and right angles without foreshortening. Camera movement never changes your number or your prediction.</p><p>This is an introduction using small whole-number coordinates. Complex numbers can also have fractional and other real-valued coordinates. The trails illustrate operations; they are not physical journeys.</p></details>
+      <details class="gn-details"><summary>Sources and teaching approach</summary><p>Based on the complex-plane representation and arithmetic, with visual precedents from <a href="https://www.mathsisfun.com/algebra/complex-number-multiply.html" target="_blank" rel="noopener">Maths Is Fun</a>, <a href="https://www.geogebra.org/m/vywhkypt" target="_blank" rel="noopener">GeoGebra’s arithmetic-and-geometry applet</a>, and <a href="https://help.desmos.com/hc/en-us/articles/31103542590733-Complex-Numbers" target="_blank" rel="noopener">Desmos Complex Mode</a>. This game’s prediction missions and artwork were made for SpookyQubits. Learning gains have not been evaluated.</p></details>
+    </section>
+    <div class="gn-live" role="status" aria-live="polite"></div>
+  </section>
+  <script>
+  (()=>{
+    'use strict';
+    const root=document.getElementById('ghost-numbers-preview'),app=root.querySelector('.gn-app'),$=s=>root.querySelector(s),svg=$('.gn-plane'),plot=$('.gn-plot');
+    const clean=n=>Math.abs(n)<1e-9?0:Math.round(n*1e8)/1e8;
+    function valid(z){return Array.isArray(z)&&z.length===2&&z.every(Number.isFinite);}
+    const add=(z,w)=>z.map((n,i)=>clean(n+w[i]));
+    const multiply=(z,w)=>[clean(z[0]*w[0]-z[1]*w[1]),clean(z[0]*w[1]+z[1]*w[0])];
+    function fmt(z){const a=clean(z[0]),b=clean(z[1]),im=Math.abs(b)===1?'i':Math.abs(b)+'i';return b===0?String(a):a===0?(b<0?'−':'')+im:a+(b<0?' − ':' + ')+im;}
+    const OPS={right:{kind:'add',n:[1,0],label:'+ 1',short:'Slide right'},up:{kind:'add',n:[0,1],label:'+ i',short:'Slide up'},diagonal:{kind:'add',n:[1,1],label:'+ (1 + i)',short:'Two steps'},turn:{kind:'multiply',n:[0,1],label:'× i',short:'Quarter-turn'},stretch:{kind:'multiply',n:[2,0],label:'× 2',short:'Twice as far'},both:{kind:'multiply',n:[1,1],label:'× (1 + i)',short:'Turn & grow'}};
+    const LESSONS=[
+      {title:'A number with two directions',intro:'Start at 0. Add 2 + i. Predict the new point.',stages:[{z:[0,0],op:{kind:'add',n:[2,1],label:'+ (2 + i)'}}],why:'2 + i is one complex number: 2 along the real axis and 1 along the imaginary axis.'},
+      {title:'Add i: slide the point',intro:'Start at 2 + i. Add i. Where will the ghost land?',stages:[{z:[2,1],op:OPS.up}],why:'Adding i increases only the imaginary coordinate: (2, 1) becomes (2, 2). The point slides one unit up.'},
+      {title:'Multiply by i: turn the arrow',intro:'Same starting number, 2 + i. This time multiply by i.',stages:[{z:[2,1],op:OPS.turn}],why:'Multiplying by i turns the whole arrow 90° counterclockwise around zero. (2, 1) becomes (−1, 2). Adding i would have landed at 2 + 2i instead.'},
+      {title:'Two quarter-turns make −1',intro:'Begin at 1. Multiply by i twice, predicting one turn at a time.',stages:[{z:[1,0],op:OPS.turn},{z:[0,1],op:OPS.turn}],why:'The turns take 1 → i → −1. So 1 × i × i = −1, which shows i² = −1.'},
+      {title:'Stretch without changing direction',intro:'Start at 1 + i. Multiply by 2.',stages:[{z:[1,1],op:OPS.stretch}],why:'Both coordinates double. The arrow points the same way and becomes twice as long: 1 + i becomes 2 + 2i.'},
+      {title:'A turn and a stretch together',intro:'Final challenge: start at 1 + i, then multiply by 1 + i.',stages:[{z:[1,1],op:OPS.both}],why:'Multiplying by 1 + i turns the arrow 45° counterclockwise and stretches its length by √2. The result is 2i. Watch the new direction and distance, then compare the coordinates.'}
+    ];
+    function result(z,op){if(!valid(z)||!op||!valid(op.n)||!['add','multiply'].includes(op.kind))throw Error('Invalid complex-number operation');const out=op.kind==='add'?add(z,op.n):multiply(z,op.n);if(!valid(out))throw Error('Result is too large');return out;}
+    function sample(z,op,t){
+      if(!Number.isFinite(t)||t<0||t>1)throw Error('Invalid animation progress');const end=result(z,op);if(t===0)return z.slice();if(t===1)return end;
+      if(op.kind==='add'){const total=Math.abs(op.n[0])+Math.abs(op.n[1]),split=total?Math.abs(op.n[0])/total:0;return split===0?[z[0],z[1]+op.n[1]*t]:split===1?[z[0]+op.n[0]*t,z[1]]:t<split?[z[0]+op.n[0]*t/split,z[1]]:[z[0]+op.n[0],z[1]+op.n[1]*(t-split)/(1-split)];}
+      const angle=Math.atan2(op.n[1],op.n[0])*t,scale=1+(Math.hypot(...op.n)-1)*t,c=Math.cos(angle),s=Math.sin(angle);return [(z[0]*c-z[1]*s)*scale,(z[0]*s+z[1]*c)*scale];
+    }
+    const S={mode:'missions',mission:0,step:0,phase:'ready',guess:null,records:{},free:[2,1],freeOp:'turn',history:[],last:null};
+    const camera={view:'3d',yaw:-.28,tilt:.72};
+    let animation=null,frame=0,geometry=null,lastWidth=0,drag=null,ignorePlotClickUntil=0,lastSnapshot=null;
+    const key=()=>S.mission+':'+S.step;
+    const stage=()=>LESSONS[Math.min(S.mission,5)].stages[S.step]||LESSONS[5].stages[0];
+    const context=()=>S.mode==='missions'?stage():{z:S.free,op:OPS[S.freeOp]};
+    function meaning(op){if(op.kind==='add'){const [a,b]=op.n;return 'Addition shifts the point by '+(a?a+' real unit'+(Math.abs(a)===1?'':'s'):'no real units')+' and '+(b?b+' imaginary unit'+(Math.abs(b)===1?'':'s'):'no imaginary units')+'. Add the two coordinates separately.';}if(op.n[0]===0&&op.n[1]===1)return 'Multiplying by i makes a 90° counterclockwise turn around zero. The distance from zero stays the same. The rule is (a, b) → (−b, a). This differs from adding i, which just moves the point up.';if(op.n[0]===2&&op.n[1]===0)return 'Multiplying by 2 doubles both coordinates and the distance from zero. It keeps the direction of every nonzero arrow. Zero stays zero.';return 'Multiplying by 1 + i turns by 45° counterclockwise and multiplies the distance from zero by √2, about 1.41. In coordinates, (a + bi)(1 + i) = (a − b) + (a + b)i.';}
+    function stop(){cancelAnimationFrame(frame);frame=0;animation=null;}
+    function save(){const data={modelContent:{game:'Ghost Numbers',mode:S.mode,mission:S.mission+1,view:camera.view},privateContent:{...S,camera:{...camera},last:S.last?{from:S.last.from,opId:S.last.opId}:null}};lastSnapshot=JSON.stringify(data);try{window.openai?.setWidgetState?.(data)?.catch(()=>{});}catch(_){}}
+    function restore(data){
+      const p=data?.privateContent;if(!p||typeof p!=='object')return;
+      if(p.camera&&typeof p.camera==='object'){
+        if(['3d','flat'].includes(p.camera.view))camera.view=p.camera.view;
+        if(Number.isFinite(p.camera.yaw))camera.yaw=Math.max(-.65,Math.min(.65,p.camera.yaw));
+        if(Number.isFinite(p.camera.tilt))camera.tilt=Math.max(.25,Math.min(1.08,p.camera.tilt));
+      }
+      if(['missions','free'].includes(p.mode))S.mode=p.mode;
+      if(Number.isInteger(p.mission)&&p.mission>=0&&p.mission<=5)S.mission=p.mission;
+      if(Number.isInteger(p.step)&&LESSONS[S.mission].stages[p.step])S.step=p.step;
+      if(['ready','result','finish'].includes(p.phase))S.phase=p.phase;
+      if(valid(p.guess)&&p.guess.every(n=>Number.isInteger(n)&&Math.abs(n)<=3))S.guess=p.guess;
+      if(valid(p.free)&&p.free.every(n=>Number.isInteger(n)&&Math.abs(n)<=12))S.free=p.free;
+      if(OPS[p.freeOp])S.freeOp=p.freeOp;
+      if(Array.isArray(p.history))S.history=p.history.filter(z=>valid(z)&&z.every(n=>Number.isInteger(n)&&Math.abs(n)<=12)).slice(-16);
+      if(p.records&&typeof p.records==='object')for(const [k,r]of Object.entries(p.records)){const [m,s]=k.split(':').map(Number);if(LESSONS[m]?.stages[s]&&typeof r.correct==='boolean'&&valid(r.guess)&&r.guess.every(n=>Number.isInteger(n)&&Math.abs(n)<=3))S.records[k]={correct:r.correct,guess:r.guess.map(clean)};}
+      if(S.phase==='result'&&!S.records[key()])S.phase='ready';
+      if(S.phase==='finish'&&Object.keys(S.records).length!==7)S.phase='ready';
+    }
+    function drawPlane(){
+      const width=Math.max(260,Math.round(plot.getBoundingClientRect().width||plot.clientWidth||360));
+      const side=Math.min(252,width-72),height=side+85,cx=width/2,cy=44+side/2;
+      const c=animation||(S.mode==='free'&&S.last?{z:S.last.from,op:OPS[S.last.opId]}:context());
+      const from=animation?animation.from:c.z,op=c.op,to=result(from,op);
+      const displayed=animation?sample(from,op,animation.t):S.mode==='missions'&&S.phase!=='ready'?to:S.mode==='free'?S.free:from;
+      const radial=op.kind==='multiply'?Math.max(Math.hypot(...from),Math.hypot(...to)):Math.max(...from.map(Math.abs),...to.map(Math.abs));
+      const bound=S.mode==='missions'?3:Math.min(18,Math.max(3,Math.ceil(radial)));
+      const tilted=camera.view==='3d',yaw=tilted?camera.yaw:0,tilt=tilted?camera.tilt:0;
+      const co=Math.cos(yaw),si=Math.sin(yaw),foreshorten=Math.cos(tilt),extent=Math.abs(co)+Math.abs(si);
+      const unit=tilted?Math.min((width-72)/(2*bound*extent),side/(2*bound*extent*foreshorten)):side/(2*bound);
+      const project=z=>({x:cx+unit*(z[0]*co-z[1]*si),y:cy-unit*(z[0]*si+z[1]*co)*foreshorten});
+      const unproject=p=>{const x=(p.x-cx)/unit,y=-(p.y-cy)/(unit*foreshorten);return[x*co+y*si,-x*si+y*co];};
+      const corners=[[-bound,-bound],[bound,-bound],[bound,bound],[-bound,bound]].map(project);
+      const left=Math.min(...corners.map(p=>p.x)),top=Math.min(...corners.map(p=>p.y));
+      geometry={width,height,side,left,top,bound,unit,project,unproject,corners,view:camera.view};lastWidth=width;
+      const pt=p=>p.x.toFixed(3)+','+p.y.toFixed(3);
+      const segment=(a,b)=>'M'+pt(project(a))+'L'+pt(project(b));
+      const path=points=>points.map((p,i)=>(i?'L':'M')+pt(p)).join('');
+      const norm=v=>{const d=Math.hypot(...v);return v.map(n=>n/d);};
+      const realDirection=norm([co,-si*foreshorten]),imagDirection=norm([-si,-co*foreshorten]);
+      const realNormal=[-realDirection[1],realDirection[0]],imagNormal=[imagDirection[1],-imagDirection[0]];
+      const zero=project([0,0]),point=project(displayed),start=project(from);
+      const pick=S.mode==='missions'&&S.phase!=='finish'?S.guess:null;
+      let grid='',ticks='';const gridStep=bound<=6?1:2;
+      for(let n=-bound;n<=bound;n+=gridStep)if(n){
+        grid+=`<path d="${segment([n,-bound],[n,bound])+segment([-bound,n],[bound,n])}" stroke="var(--gn-line)" stroke-width=".8" opacity=".8" fill="none"/>`;
+      }
+      const tickVals=bound===3?[-3,-1,1,3]:[-bound,-Math.ceil(bound/2),Math.ceil(bound/2),bound];
+      for(const n of tickVals){
+        const x=project([n,0]),y=project([0,n]);
+        ticks+=`<text x="${x.x+realNormal[0]*27}" y="${x.y+realNormal[1]*27+4}" text-anchor="middle">${n<0?'−'+Math.abs(n):n}</text><text x="${y.x+imagNormal[0]*22}" y="${y.y+imagNormal[1]*22+4}" text-anchor="end">${fmt([0,n])}</text>`;
+      }
+      const re=project([bound,0]),im=project([0,bound]);
+      const axis=`<path d="${segment([-bound,0],[bound,0])}" stroke="var(--gn-blue)" stroke-width="2.2" fill="none"/><path d="${segment([0,-bound],[0,bound])}" stroke="var(--gn-purple)" stroke-width="2.2" fill="none"/><text x="${re.x+realNormal[0]*44+realDirection[0]*5}" y="${re.y+realNormal[1]*44+4}" text-anchor="end" class="gn-axis-title">Real</text><text x="${im.x+imagDirection[0]*27}" y="${im.y+imagDirection[1]*27}" text-anchor="middle" class="gn-axis-title">Imaginary</text>`;
+      const foot=project([displayed[0],0]);
+      const components=`<path data-component="real" d="M${pt(zero)}L${pt(foot)}" fill="none" stroke="var(--gn-blue)" stroke-width="3.5"/><path data-component="imaginary" d="M${pt(foot)}L${pt(point)}" fill="none" stroke="var(--gn-purple)" stroke-width="3.5" stroke-dasharray="4 3"/>`;
+      const showTrail=animation||S.mode==='missions'&&S.phase==='result'||S.mode==='free'&&S.last;
+      const pathFrom=S.mode==='free'&&!animation&&S.last?S.last.from:from;
+      const pathOp=S.mode==='free'&&!animation&&S.last?OPS[S.last.opId]:op;
+      const samples=showTrail?Array.from({length:61},(_,i)=>project(sample(pathFrom,pathOp,i/60))):[];
+      const trail=samples.length?`<path data-motion-trail="true" d="${path(samples)}" fill="none" stroke="var(--gn-purple)" stroke-width="3" stroke-dasharray="4 4"/>`:'';
+      function ring(z,pixels,attrs){const r=pixels/unit;return `<path d="${path(Array.from({length:49},(_,i)=>project([z[0]+r*Math.cos(i/48*2*Math.PI),z[1]+r*Math.sin(i/48*2*Math.PI)])))}Z" ${attrs}/>`;}
+      const previous=showTrail?ring(pathFrom,7,'fill="var(--gn-white)" stroke="var(--gn-muted)" stroke-width="1.5"'):'';
+      const comparison=S.mode==='missions'&&S.mission===2&&S.phase==='result'&&!animation?`<g opacity=".7">${ring([2,2],8,'fill="none" stroke="var(--gn-purple)" stroke-width="2"')}<text x="${project([2,2]).x-8}" y="${project([2,2]).y-18}" text-anchor="end">+ i result</text></g>`:'';
+      const guess=pick?`<g data-guess="${pick.join(',')}">${ring(pick,23,'fill="none" stroke="var(--gn-gold)" stroke-width="3" stroke-dasharray="5 4"')}</g>`:'';
+      const arrowLength=Math.hypot(point.x-zero.x,point.y-zero.y),ux=arrowLength?(point.x-zero.x)/arrowLength:0,uy=arrowLength?(point.y-zero.y)/arrowLength:0;
+      const arrow=arrowLength>6?`<path d="M${pt(zero)}L${pt(point)}" stroke="var(--gn-blue)" stroke-width="2.2" fill="none"/><path d="M${pt(point)}L${point.x-ux*9-uy*5},${point.y-uy*9+ux*5}L${point.x-ux*9+uy*5},${point.y-uy*9-ux*5}Z" fill="var(--gn-blue)"/>`:'';
+      const shadow=tilted?ring(displayed,12,'fill="var(--gn-ink)" opacity=".13"'):'';
+      const ghost=`<g data-current="${displayed.map(clean).join(',')}" transform="translate(${point.x.toFixed(3)} ${point.y.toFixed(3)})"><path d="M-13 10V-2C-13-12-7-17 0-17S13-12 13-2V13L7 9L1 14L-5 10L-11 14Z" fill="var(--gn-blue)" stroke="var(--gn-white)" stroke-width="1.4"/><ellipse cx="-4.5" cy="-4" rx="1.8" ry="2.4" fill="var(--gn-white)"/><ellipse cx="4.5" cy="-4" rx="1.8" ry="2.4" fill="var(--gn-white)"/><path d="M-3 4Q0 7 3 4" fill="none" stroke="var(--gn-white)" stroke-width="1.6" stroke-linecap="round"/></g>`;
+      const board=path(corners)+'Z',boardShadow=tilted?`<path d="${path(corners.map(p=>({x:p.x,y:p.y+8})))}Z" fill="var(--gn-ink)" opacity=".1"/>`:'';
+      svg.setAttribute('viewBox',`0 0 ${width} ${height}`);svg.setAttribute('height',height);svg.dataset.view=camera.view;
+      svg.setAttribute('aria-label',`${tilted?'Tilted 3D view of the':'Flat'} complex plane. Ghost at ${fmt(displayed)}${pick?'. Your prediction is '+fmt(pick):''}. The real and imaginary coordinates stay in one plane.`);
+      svg.innerHTML=`<title>Complex-number map · ${tilted?'3D View':'Flat View'}</title><desc>The camera can tilt; all mathematical points and movement trails remain on the real-imaginary plane. There is no third number coordinate.</desc>${boardShadow}<path data-plane-surface="true" d="${board}" fill="var(--gn-white)" stroke="var(--gn-line)" stroke-width="1.1"/>${grid}${axis}${ticks}${components}${trail}${previous}${comparison}${guess}${arrow}${shadow}${ghost}`;
+      root.querySelectorAll('button[data-view]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.view===camera.view)));
+      updateCaption();
+    }
+    function updateCaption(){
+      const suffix=camera.view==='3d'?'Drag to tilt; tap a point.':'Tap a point, or use the coordinates below.';
+      $('.gn-plot-caption').textContent=S.mode==='free'?suffix:S.phase==='finish'?'Two coordinates, one plane. Tilting changes only the view.':S.phase==='result'?'Gold ring: your prediction · blue ghost: the result':camera.view==='3d'?'Drag to tilt · tap your prediction · Flat View reads square-on.':'Tap your prediction, or enter a and b below.';
+    }
+    function setFields(value){$('#gn-coordinate-a').value=value?String(value[0]):'';$('#gn-coordinate-b').value=value?String(value[1]):'';}
+    function render(options={}){
+      const free=S.mode==='free',finished=!free&&S.phase==='finish',revealed=!free&&S.phase==='result',c=free&&S.last?{z:S.last.from,op:OPS[S.last.opId]}:context(),out=result(c.z,c.op),lesson=LESSONS[S.mission];
+      root.querySelectorAll('[data-mode]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.mode===S.mode)));
+      $('.gn-kicker').textContent=free?'Free Play · choose a number and an operation':finished?'Six missions complete':`Mission ${S.mission+1} of 6${lesson.stages.length>1?' · turn '+(S.step+1)+' of '+lesson.stages.length:''}`;
+      $('.gn-task h3').textContent=free?'Slide. Turn. Stretch.':finished?'You mapped the complex plane.':lesson.title;
+      $('.gn-task p').textContent=free?'Tap the map or edit a and b. Then play a move.':finished?'Compare how points moved, how arrows turned, and what the symbols meant.':lesson.intro;
+      $('.gn-from').textContent=fmt(c.z);$('.gn-operation').textContent=c.op.label;$('.gn-to').textContent=free?fmt(out):revealed||finished?fmt(out):'?';
+      $('.gn-plot-caption').textContent=free?'Tap a grid point to set the blue ghost.':revealed?'Gold ring: your prediction · blue ghost: the result':finished?'Horizontal and vertical coordinates name one number.':'Tap the predicted landing point, or enter a and b below.';
+      $('.gn-fields').hidden=revealed||finished;
+      $('.gn-a-label').textContent=free?'Set number · real part a':'Your guess · real part a';$('.gn-b-label').textContent=free?'Set number · i coefficient b':'Your guess · i coefficient b';
+      for(const input of root.querySelectorAll('.gn-fields input')){input.min=String(free?-12:-3);input.max=String(free?12:3);input.disabled=!!animation;}
+      if(!options.keepFields)setFields(free?S.free:S.guess);
+      const opArea=$('.gn-free-ops');opArea.hidden=!free;opArea.innerHTML=Object.entries(OPS).map(([id,op])=>`<button type="button" class="gn-button cursor-interaction" data-op="${id}" data-kind="${op.kind}" aria-pressed="${id===S.freeOp}" ${animation?'disabled':''}>${op.label}<small>${op.short}</small></button>`).join('');
+      const run=$('[data-action=run]'),next=$('[data-action=next]');run.hidden=finished;run.disabled=!!animation||!free&&!revealed&&!S.guess;run.classList.toggle('gn-primary',!revealed);run.textContent=animation?'Moving…':free?'Play '+c.op.label+' →':revealed?'Replay the move':'Play the move →';
+      next.hidden=free||!revealed&&!finished;next.disabled=!!animation;next.textContent=finished?'Play the missions again ↗':S.step<lesson.stages.length-1?'Next quarter-turn →':S.mission===5?'See your discoveries →':'Next mission →';
+      $('.gn-secondary-actions').hidden=!free;$('[data-action=undo]').disabled=!!animation||S.history.length===0;$('[data-action=reset]').disabled=!!animation;
+      $('.gn-math').textContent=meaning(c.op);
+      const feedback=$('.gn-feedback');feedback.hidden=!revealed||!!animation;feedback.removeAttribute('data-correct');
+      if(revealed){const record=S.records[key()];feedback.dataset.correct=String(record.correct);feedback.textContent=(record.correct?'Your prediction matched. ':'You predicted '+fmt(record.guess)+'. The result is '+fmt(out)+'. ')+(S.mission===3&&S.step===0?'One quarter-turn takes 1 to i. Predict the second turn next.':lesson.why);}
+      const summary=$('.gn-summary');summary.hidden=!finished;
+      if(finished){const total=Object.values(S.records).filter(r=>r.correct).length;summary.innerHTML=`<p><b>${total} of 7 first predictions matched.</b> Every mission opened a different view of the same number system. Use Free Play to test another starting point.</p><table><thead><tr><th>You explored</th><th>Visual meaning</th></tr></thead><tbody><tr><td>a + bi</td><td>One point, coordinates (a, b)</td></tr><tr><td>+ i</td><td>Slide one up</td></tr><tr><td>× i</td><td>Quarter-turn around zero</td></tr><tr><td>i² = −1</td><td>Two quarter-turns from 1</td></tr><tr><td>× 2</td><td>Double the distance</td></tr><tr><td>× (1 + i)</td><td>Turn and stretch</td></tr></tbody></table>`;}
+      drawPlane();
+    }
+    function error(message){$('.gn-error').textContent=message;$('.gn-error').hidden=!message;}
+    function inputChange(){if(animation)return;const a=$('#gn-coordinate-a').value,b=$('#gn-coordinate-b').value,max=S.mode==='free'?12:3;
+      if(a===''||b===''){if(S.mode==='missions')S.guess=null;error('');render({keepFields:true});$('[data-action=run]').disabled=true;return;}
+      const z=[Number(a),Number(b)];if(!z.every(n=>Number.isInteger(n)&&Math.abs(n)<=max)){error('Use whole-number coordinates from −'+max+' to '+max+' in this starter grid.');if(S.mode==='missions')S.guess=null;$('[data-action=run]').disabled=true;return;}
+      error('');if(S.mode==='missions')S.guess=z;else{S.free=z;S.last=null;S.history=[];}render({keepFields:true});save();
+    }
+    function run(){
+      if(animation||S.mode==='missions'&&(S.phase==='finish'||!S.guess))return;error('');const c=context(),from=c.z.slice(),op=c.op,to=result(from,op),free=S.mode==='free',replay=!free&&S.phase==='result';
+      if(free&&to.some(n=>Math.abs(n)>12)){error('The result would be '+fmt(to)+'. This starter grid keeps each coordinate between −12 and 12. Undo or choose a smaller starting number.');return;}
+      animation={from,to,op,t:0};render({keepFields:true});const start=performance.now(),duration=1100;
+      function finish(){animation=null;if(free){S.history.push(from);S.history=S.history.slice(-16);S.free=to;S.last={from,opId:S.freeOp};}else{if(!replay&&!S.records[key()])S.records[key()]={correct:to.every((n,i)=>Math.abs(n-S.guess[i])<1e-8),guess:S.guess.slice()};S.phase='result';}render();save();$('.gn-live').textContent=fmt(from)+' '+op.label+' equals '+fmt(to);}
+      if(globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches){finish();return;}
+      function tick(now){if(!animation)return;const t=Math.max(0,Math.min(1,(now-start)/duration));animation.t=t*t*(3-2*t);drawPlane();if(t===1)finish();else frame=requestAnimationFrame(tick);}frame=requestAnimationFrame(tick);
+    }
+    function next(){if(animation||S.mode!=='missions')return;if(S.phase==='finish'){S.mission=0;S.step=0;S.records={};}else if(S.phase==='result'){if(S.step<LESSONS[S.mission].stages.length-1)S.step++;else if(S.mission<5){S.mission++;S.step=0;}else{S.phase='finish';render();save();return;}}else return;S.phase='ready';S.guess=null;error('');render();save();}
+    root.addEventListener('click',e=>{
+      const button=e.target.closest('button');if(button&&root.contains(button)){
+        if(button.disabled)return;
+        if(button.dataset.view){camera.view=button.dataset.view;drag=null;drawPlane();save();$('.gn-live').textContent=camera.view==='flat'?'Flat View. Lengths and angles are shown square-on.':'3D View. Drag to tilt the plane. Your number is unchanged.';}
+        else if(button.dataset.mode){stop();S.mode=button.dataset.mode;error('');render();save();}
+        else if(button.dataset.op){S.freeOp=button.dataset.op;S.last=null;error('');render();save();}
+        else if(button.dataset.action==='run')run();else if(button.dataset.action==='next')next();
+        else if(button.dataset.action==='undo'&&!animation&&S.history.length){S.free=S.history.pop();S.last=null;error('');render();save();}
+        else if(button.dataset.action==='reset'&&!animation){S.free=[2,1];S.history=[];S.last=null;error('');render();save();}
+        return;
+      }
+      if(!e.target.closest('.gn-plane')||animation||performance.now()<ignorePlotClickUntil||S.mode==='missions'&&S.phase!=='ready')return;
+      const rect=svg.getBoundingClientRect(),g=geometry,x=(e.clientX-rect.left)*g.width/(rect.width||g.width),y=(e.clientY-rect.top)*g.height/(rect.height||g.height);
+      const raw=g.unproject({x,y});if(raw.some(n=>Math.abs(n)>g.bound+.05))return;
+      const z=raw.map(Math.round),max=S.mode==='free'?12:3;if(z.some(n=>Math.abs(n)>max))return;
+      if(S.mode==='missions')S.guess=z;else{S.free=z;S.history=[];S.last=null;}error('');render();save();
+    });
+    svg.addEventListener('pointerdown',e=>{if(camera.view!=='3d'||e.button!==0||e.isPrimary===false)return;drag={id:e.pointerId,x:e.clientX,y:e.clientY,yaw:camera.yaw,tilt:camera.tilt,moved:false};svg.setPointerCapture?.(e.pointerId);});
+    svg.addEventListener('pointermove',e=>{if(!drag||e.pointerId!==drag.id)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;if(!drag.moved&&Math.hypot(dx,dy)<7)return;drag.moved=true;camera.yaw=Math.max(-.65,Math.min(.65,drag.yaw+dx*.006));camera.tilt=Math.max(.25,Math.min(1.08,drag.tilt+dy*.006));drawPlane();});
+    for(const event of ['pointerup','pointercancel'])svg.addEventListener(event,e=>{if(!drag||e.pointerId!==drag.id)return;if(drag.moved){ignorePlotClickUntil=performance.now()+250;save();}drag=null;});
+    root.querySelectorAll('.gn-fields input').forEach(input=>input.addEventListener('input',inputChange));
+    restore(window.openai?.widgetState);render();
+    window.addEventListener('openai:set_globals',e=>{const state=e.detail?.globals?.widgetState;if(state&&JSON.stringify(state)!==lastSnapshot){stop();restore(state);render();}});
+    if(globalThis.ResizeObserver)new ResizeObserver(()=>{const w=Math.round(plot.getBoundingClientRect().width);if(w>0&&w!==lastWidth)drawPlane();}).observe(app);
+    root.preview={add,multiply,result,sample,fmt,OPS,LESSONS,getState:()=>JSON.parse(JSON.stringify(S)),getGeometry:()=>geometry,getCamera:()=>({...camera})};
+  })();
+  </script>
+</div>

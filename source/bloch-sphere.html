@@ -1,0 +1,133 @@
+<div id="block-sphere-preview">
+  <style>
+    #block-sphere-preview{padding:14px 0;color-scheme:light}
+    #block-sphere-preview .bs-app{--bs-paper:#faf7f1;--bs-white:#fffefa;--bs-ink:#1f2a44;--bs-muted:#586173;--bs-line:#cbd0d8;--bs-soft:#ececf4;--bs-brand:#b41524;--bs-on-brand:#fffefa;--bs-a:#154c9c;--bs-b:#6c2f9e;--bs-c:#c0182a;max-width:430px;margin:auto;background:var(--bs-paper);color:var(--bs-ink);font-family:"Avenir Next",Avenir,system-ui,-apple-system,sans-serif;border:3px solid var(--bs-ink);border-radius:29px;padding:0;box-sizing:border-box;overflow:hidden;box-shadow:0 12px 28px #1f2a4414}
+    #block-sphere-preview .bs-app *{box-sizing:border-box}
+    #block-sphere-preview .bs-header{background:var(--bs-ink);color:var(--bs-white);padding:13px 17px 14px;border-bottom:4px solid var(--bs-brand)}
+    #block-sphere-preview .bs-eyebrow{font:700 11px/1.5 ui-monospace,monospace;letter-spacing:1.2px;color:var(--bs-white);margin-bottom:5px;padding-right:85px}
+    #block-sphere-preview .bs-title{margin:0;font-size:30px;line-height:1.1;letter-spacing:-1.2px;font-weight:850;color:var(--bs-white)}
+    #block-sphere-preview .bs-subtitle{display:none}
+    #block-sphere-preview .bs-count-line{display:flex;align-items:center;justify-content:space-between;gap:9px;flex-wrap:wrap;padding:12px 15px 0;font-size:12px}
+    #block-sphere-preview .bs-count-group{display:flex;align-items:center;gap:6px}
+    #block-sphere-preview .bs-caption{color:var(--bs-muted);font-size:11px}
+    #block-sphere-preview .bs-control{border:2px solid var(--bs-line);background:var(--bs-white);color:var(--bs-ink);border-radius:12px;min-height:48px;min-width:48px;padding:10px 12px;font-family:inherit;font-size:14px;font-weight:750;line-height:1.3;touch-action:manipulation}
+    #block-sphere-preview .bs-control[aria-pressed=true]{background:var(--bs-brand);border-color:var(--bs-brand);color:var(--bs-on-brand)}
+    #block-sphere-preview .bs-control:hover{border-color:var(--bs-brand)}
+    #block-sphere-preview .bs-control:disabled{opacity:.5}
+    #block-sphere-preview .bs-canvas{width:calc(100% - 26px);position:relative;margin:0 13px}
+    #block-sphere-preview .bs-sphere{display:block;width:100%;touch-action:none;user-select:none;cursor:grab;overflow:visible}
+    #block-sphere-preview .bs-sphere:active{cursor:grabbing}
+    #block-sphere-preview .bs-sphere text{font-family:"Avenir Next",Avenir,system-ui,sans-serif;font-size:12px;fill:var(--bs-muted);font-weight:600}
+    #block-sphere-preview .bs-sphere .bs-marker-id{fill:var(--bs-white);font-size:12px;font-weight:850}
+    #block-sphere-preview .bs-view-hint{font-size:11px;color:var(--bs-muted);text-align:center;margin:-8px 0 12px}
+    #block-sphere-preview .bs-deck{background:var(--bs-white);border-top:2px solid var(--bs-line);border-radius:22px 22px 0 0;padding:16px 15px max(18px,env(safe-area-inset-bottom));margin-top:13px}
+    #block-sphere-preview .bs-deck-label{font-size:11px;font-weight:800;letter-spacing:1px;color:var(--bs-muted);margin-bottom:10px;text-transform:uppercase}
+    #block-sphere-preview .bs-gates{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+    #block-sphere-preview .bs-gates .bs-control{min-width:0;width:100%;padding:12px 4px;min-height:51px;font-size:17px;font-weight:850;box-shadow:0 3px 0 var(--bs-line)}
+    #block-sphere-preview .bs-gates .bs-control[aria-pressed=true]{box-shadow:0 3px 0 #7d0e18}
+    #block-sphere-preview .bs-play-row{display:flex;flex-direction:column;align-items:stretch;gap:8px;margin-top:14px}
+    #block-sphere-preview .bs-play{background:var(--bs-brand);border-color:var(--bs-brand);color:var(--bs-on-brand);padding:14px 18px;font-size:16px;min-height:54px;width:100%;box-shadow:0 4px 0 #7d0e18}
+    #block-sphere-preview .bs-gate-label{font-size:11px;color:var(--bs-muted);line-height:1.6;text-align:center}
+    #block-sphere-preview .bs-progress-label{display:flex;justify-content:space-between;font-size:11px;color:var(--bs-muted);margin:12px 0 2px}
+    #block-sphere-preview .bs-progress{width:100%;accent-color:var(--bs-brand);min-height:44px;margin:0;touch-action:pan-x}
+    #block-sphere-preview .bs-insight{font-size:13px;line-height:1.65;margin:0 15px 12px;padding-left:11px;border-left:3px solid var(--bs-brand);color:var(--bs-ink);min-height:0;font-weight:650}
+    #block-sphere-preview .bs-legend{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;border-top:1px solid var(--bs-line);margin:0 15px;padding-top:7px}
+    #block-sphere-preview .bs-probe-row{display:grid;grid-template-columns:25px minmax(0,1fr);align-items:center;gap:4px;padding:4px 0;font-size:11px;line-height:1.5}
+    #block-sphere-preview .bs-probe-name{display:grid;place-items:center;min-width:25px;height:25px;background:var(--probe);color:var(--bs-white);border-radius:8px;font-weight:850}
+    #block-sphere-preview .bs-state-label{grid-column:1/-1;grid-row:2;min-width:0;text-align:center;font-size:12px;font-weight:650}
+    #block-sphere-preview .bs-probability{grid-column:2;grid-row:1;color:var(--bs-muted);white-space:nowrap;font-size:11px;font-variant-numeric:tabular-nums;text-align:right}
+    #block-sphere-preview .bs-model-note{font-size:11px;line-height:1.6;color:var(--bs-muted);margin-top:11px}
+    #block-sphere-preview .bs-model-note summary{min-height:44px;padding:11px 0;cursor:default}
+    #block-sphere-preview .bs-footer{font-size:11px;line-height:1.6;color:var(--bs-muted);margin:0 0 5px}
+    #block-sphere-preview .bs-live{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    @media(max-width:370px){#block-sphere-preview .bs-app{border-radius:23px}#block-sphere-preview .bs-title{font-size:30px}#block-sphere-preview .bs-count-line{gap:7px}#block-sphere-preview .bs-gates{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}#block-sphere-preview .bs-probe-row{font-size:11px;gap:4px}#block-sphere-preview .bs-state-label{overflow-wrap:anywhere;font-size:11px}#block-sphere-preview .bs-probability{font-size:11px}}
+    @media(prefers-reduced-motion:reduce){#block-sphere-preview *{animation:none!important;transition:none!important}}
+    html,body{background:#faf7f1!important;color-scheme:light}
+    #block-sphere-preview .bs-app{--bs-ink:#202435;--bs-muted:#535969;--bs-line:#bec5d1}
+    #block-sphere-preview .bs-header{background:var(--bs-brand);border-bottom-color:var(--bs-ink)}
+    #block-sphere-preview .bs-deck{border-top-color:var(--bs-ink)}
+    #block-sphere-preview .bs-sphere text{fill:var(--bs-ink)}
+    #block-sphere-preview .bs-sphere .bs-marker-id{fill:var(--bs-white)}
+  </style>
+  <section class="bs-app" aria-label="Bloch Sphere gate playground">
+    <header class="bs-header"><div class="bs-eyebrow">SPOOKYQUBITS · GATE LAB</div>
+    <h2 class="bs-title">Bloch Sphere<span style="color:var(--bs-white)">.</span></h2>
+    <div class="bs-subtitle">One gate. Different ghost reactions.</div></header>
+    <div class="bs-count-line"><div class="bs-count-group" role="group" aria-label="Number of independent ghost states"><span style="margin-right:4px">Ghosts</span><button type="button" class="bs-control cursor-interaction" data-count="1" aria-pressed="false">1</button><button type="button" class="bs-control cursor-interaction" data-count="2" aria-pressed="false">2</button><button type="button" class="bs-control cursor-interaction" data-count="3" aria-pressed="true">3</button></div><span class="bs-caption">Separate states</span></div>
+    <div class="bs-canvas"><svg class="bs-sphere" role="img" aria-label="Bloch sphere with three independent ghost state markers" xmlns="http://www.w3.org/2000/svg"></svg></div>
+    <div class="bs-view-hint">Swipe the sphere to look around</div>
+    <div class="bs-insight"></div>
+    <div class="bs-legend" aria-label="Starting states, gate results, and current measurement probabilities"></div>
+    <section class="bs-deck" aria-label="Gate controls"><div class="bs-deck-label">Choose a gate</div>
+    <div class="bs-gates" role="group" aria-label="Gate to preview"><button type="button" class="bs-control cursor-interaction" data-gate="X" aria-pressed="false">X</button><button type="button" class="bs-control cursor-interaction" data-gate="Y" aria-pressed="false">Y</button><button type="button" class="bs-control cursor-interaction" data-gate="Z" aria-pressed="true">Z</button><button type="button" class="bs-control cursor-interaction" data-gate="H" aria-pressed="false">H</button><button type="button" class="bs-control cursor-interaction" data-gate="S" aria-pressed="false">S</button><button type="button" class="bs-control cursor-interaction" data-gate="T" aria-pressed="false">T</button></div>
+    <div class="bs-play-row"><button type="button" class="bs-control bs-play cursor-interaction" data-action="play">Play Z →</button><span class="bs-gate-label"></span></div>
+    <details class="bs-model-note"><summary>Slow motion &amp; state details</summary>
+    <label class="bs-progress-label" for="block-sphere-progress"><span>Gate progress</span><span class="bs-percent">0%</span></label><input class="bs-progress" id="block-sphere-progress" type="range" min="0" max="100" value="0" aria-label="Scrub the gate movement">
+<div class="bs-footer">Each ghost marks a separate one-qubit preparation. Paths show idealized gate rotations in state space, not physical travel or entanglement.</div></details></section>
+    <div class="bs-live" role="status" aria-live="polite"></div>
+  </section>
+  <script>
+  (()=>{
+    'use strict';
+    const root=document.getElementById('block-sphere-preview'),app=root.querySelector('.bs-app'),svg=root.querySelector('.bs-sphere'),stage=root.querySelector('.bs-canvas');
+    const $=s=>root.querySelector(s),TAU=2*Math.PI;
+    const probes=[{id:'A',v:[0,0,1],label:'|0⟩',color:'var(--bs-a)'},{id:'B',v:[1,0,0],label:'|+⟩',color:'var(--bs-b)'},{id:'C',v:[0,1,0],label:'|+i⟩',color:'var(--bs-c)'}];
+    const gates={X:{axis:[1,0,0],angle:Math.PI,label:'X · 180° about the X axis'},Y:{axis:[0,1,0],angle:Math.PI,label:'Y · 180° about the Y axis'},Z:{axis:[0,0,1],angle:Math.PI,label:'Z · 180° about the Z axis'},H:{axis:[Math.SQRT1_2,0,Math.SQRT1_2],angle:Math.PI,label:'H · 180° about the diagonal X + Z axis'},S:{axis:[0,0,1],angle:Math.PI/2,label:'S · 90° about the Z axis'},T:{axis:[0,0,1],angle:Math.PI/4,label:'T · 45° about the Z axis'}};
+    const dot=(a,b)=>a.reduce((n,q,i)=>n+q*b[i],0),cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]];
+    function rotate(v,axis,angle){const c=Math.cos(angle),s=Math.sin(angle),d=dot(v,axis),k=cross(axis,v);return v.map((q,i)=>q*c+k[i]*s+axis[i]*d*(1-c));}
+    const view={gate:'Z',count:3,t:0,az:.7,el:.31},design={ghostSize:23,paths:true,detail:'Three circles'};
+    let playing=false,frame=0,drag=null,lastWidth=0,lastSnapshot=null;
+    const clean=n=>Math.abs(n)<1e-10?0:n;
+    function endpointLabel(v){const poles=[[[0,0,1],'|0⟩'],[[0,0,-1],'|1⟩'],[[1,0,0],'|+⟩'],[[-1,0,0],'|−⟩'],[[0,1,0],'|+i⟩'],[[0,-1,0],'|−i⟩']];for(const [p,label]of poles)if(v.every((n,i)=>Math.abs(n-p[i])<1e-7))return label;return 'φ'+Math.round((Math.atan2(v[1],v[0])*180/Math.PI+360)%360)+'°';}
+    function insight(){const more=view.count>1,others=view.count===3?'B and C':'B',turn=view.count===3?'turn':'turns',shift=view.count===3?'shift':'shifts';return ({X:more?'B stays fixed. A flips from |0⟩ to |1⟩.':'X carries A from |0⟩ to |1⟩.',Y:view.count===3?'C stays fixed while A and B turn halfway.':'Y makes a half turn around the Y axis.',Z:more?'A stays fixed. '+others+' '+turn+' halfway.':'Z leaves A fixed on its rotation axis.',H:view.count===3?'H swaps A and B, and sends C to −Y.':more?'H swaps A and B.':'H takes A from |0⟩ to |+⟩.',S:more?'A stays fixed; '+others+' '+shift+' phase by 90°.':'S leaves A fixed on the Z axis.',T:more?'A stays fixed; '+others+' '+shift+' phase by 45°.':'T leaves A fixed on the Z axis.'})[view.gate];}
+    function snapshot(){return{modelContent:{preview:'Bloch Sphere',gate:view.gate,ghostCount:view.count},privateContent:{t:view.t,az:view.az,el:view.el}};}
+    function save(){const data=snapshot();lastSnapshot=JSON.stringify(data);try{window.openai?.setWidgetState?.(data)?.catch(()=>{});}catch(_){}}
+    function restore(saved){if(!saved||typeof saved!=='object')return;const m=saved.modelContent||{},p=saved.privateContent||{};if(gates[m.gate])view.gate=m.gate;if([1,2,3].includes(m.ghostCount))view.count=m.ghostCount;for(const key of ['t','az','el'])if(Number.isFinite(p[key]))view[key]=p[key];view.t=Math.max(0,Math.min(1,view.t));view.el=Math.max(-1.15,Math.min(1.15,view.el));}
+    function stop(){playing=false;cancelAnimationFrame(frame);frame=0;}
+    function draw(){
+      const width=Math.max(250,Math.round(stage.getBoundingClientRect().width||stage.clientWidth||360)),radius=Math.min(110,width*.27),height=radius*2+102,cx=width/2,cy=radius+51,g=gates[view.gate];lastWidth=width;
+      const camera=[Math.cos(view.el)*Math.cos(view.az),Math.cos(view.el)*Math.sin(view.az),Math.sin(view.el)],right=[-Math.sin(view.az),Math.cos(view.az),0],up=cross(camera,right);
+      const project=v=>({x:cx+radius*dot(v,right),y:cy-radius*dot(v,up),d:dot(v,camera)});
+      const point=p=>`${p.x.toFixed(2)},${p.y.toFixed(2)}`;
+      function line(points,front,color,width=1,dash=''){
+        let d='',open=false;for(const v of points){const p=project(v),visible=front===null||((p.d>=0)===front);if(visible){d+=(open?'L':'M')+point(p);open=true;}else open=false;}
+        return d?`<path d="${d}" fill="none" stroke="${color}" stroke-width="${width}" ${dash?`stroke-dasharray="${dash}"`:''} stroke-linecap="round" stroke-linejoin="round"/>`:'';
+      }
+      const circle=(plane,r=1,z=0)=>Array.from({length:145},(_,i)=>{const a=i/144*TAU,c=Math.cos(a)*r,s=Math.sin(a)*r;return plane==='xy'?[c,s,z]:plane==='xz'?[c,z,s]:[z,c,s];});
+      const circles=design.detail==='Equator only'?[circle('xy')]:[circle('xy'),circle('xz'),circle('yz')];
+      let back='',front='';for(const p of circles){back+=line(p,false,'var(--bs-line)',1,'3 5');front+=line(p,true,'var(--bs-line)',1);}
+      let axes='';for(const axis of [[1,0,0],[0,1,0],[0,0,1]]){const a=project(axis.map(q=>-q*1.08)),b=project(axis.map(q=>q*1.08));axes+=`<line x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" stroke="var(--bs-line)" stroke-width="1"/>`;}
+      const a=project(g.axis.map(q=>-q*1.1)),b=project(g.axis.map(q=>q*1.1));
+      const gateAxis=`<line x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" stroke="var(--bs-ink)" stroke-width="1.6" stroke-dasharray="6 5" opacity=".55"/>`;
+      let trails='';for(const p of probes.slice(0,view.count)){const samples=Array.from({length:101},(_,i)=>rotate(p.v,g.axis,g.angle*i/100));if(design.paths&&samples.some(v=>v.some((n,i)=>Math.abs(n-p.v[i])>.001))){trails+=`<g opacity=".65">${line(samples,false,p.color,2.5,'3 5')}${line(samples,true,p.color,2.5)}</g>`;}const st=project(p.v);trails+=`<circle cx="${st.x}" cy="${st.y}" r="5" fill="var(--bs-paper)" stroke="${p.color}" stroke-width="1.8" opacity=".7"/>`;}
+      function ghost(p){const v=rotate(p.v,g.axis,g.angle*view.t),q=project(v),scale=design.ghostSize/18;return `<g data-probe="${p.id}" data-world="${v.map(clean).join(',')}" transform="translate(${q.x.toFixed(3)} ${q.y.toFixed(3)}) scale(${scale})" opacity="${q.d<-.04?.7:1}"><path d="M-14 10V-2C-14-12-8-17 0-17S14-12 14-2V13L8 9L2 14L-4 10L-10 14Z" fill="${p.color}" stroke="${p.color}" stroke-width="2.2" stroke-linejoin="round"/><ellipse cx="-5" cy="-4" rx="1.7" ry="2.2" fill="var(--bs-white)"/><ellipse cx="5" cy="-4" rx="1.7" ry="2.2" fill="var(--bs-white)"/><text class="bs-marker-id" style="font-size:${12/scale}px" x="0" y="9" text-anchor="middle">${p.id}</text></g>`;}
+      const ordered=probes.slice(0,view.count).sort((p,q)=>project(rotate(p.v,g.axis,g.angle*view.t)).d-project(rotate(q.v,g.axis,g.angle*view.t)).d);
+      const north=project([0,0,1]),south=project([0,0,-1]);
+      let labels=`<text x="${cx}" y="${north.y-design.ghostSize-14}" text-anchor="middle">+Z · |0⟩</text><text x="${cx}" y="${south.y+design.ghostSize+24}" text-anchor="middle">−Z · |1⟩</text>`;
+      for(const [v,label]of [[[1,0,0],'+X · |+⟩'],[[0,1,0],'+Y · |+i⟩']]){const p=project(v.map(q=>q*1.2)),left=p.x<cx,x=Math.max(5,Math.min(width-5,p.x));labels+=`<text x="${x}" y="${p.y+32}" text-anchor="${left?'start':'end'}">${label}</text>`;}
+      if(width>470)for(const [v,label]of [[[-1,0,0],'−X'],[[0,-1,0],'−Y']]){const p=project(v.map(q=>q*1.19));labels+=`<text x="${p.x}" y="${p.y-13}" text-anchor="middle">${label}</text>`;}
+      svg.setAttribute('viewBox',`0 0 ${width} ${height}`);svg.setAttribute('height',height);svg.setAttribute('aria-label',`Bloch sphere comparing ${view.count} independent states under ${view.gate}, ${Math.round(view.t*100)} percent through the rotation`);
+      svg.innerHTML=`<title>${view.gate} gate on independent qubit states</title><desc>Ghost A starts at zero on positive Z. Ghost B starts at plus on positive X. Ghost C starts at plus i on positive Y. Colored curves show rotations, not trajectories in physical space.</desc><defs><radialGradient id="block-sphere-fill" cx="36%" cy="28%" r="75%"><stop offset="0" stop-color="var(--bs-paper)"/><stop offset="1" stop-color="var(--bs-soft)"/></radialGradient></defs><circle cx="${cx}" cy="${cy}" r="${radius}" fill="url(#block-sphere-fill)" stroke="var(--bs-line)" stroke-width="1"/>${back}${axes}${gateAxis}${trails}${front}<circle cx="${cx}" cy="${cy}" r="2.3" fill="var(--bs-muted)" opacity=".6"/>${ordered.map(ghost).join('')}${labels}`;
+      $('.bs-percent').textContent=Math.round(view.t*100)+'%';$('.bs-progress').value=String(Math.round(view.t*100));
+      $('.bs-gate-label').textContent=g.label;$('.bs-insight').textContent=insight();
+      $('[data-action=play]').textContent=playing?'Pause':view.t>0?'Replay '+view.gate+' ↻':'Play '+view.gate+' →';
+      root.querySelectorAll('[data-gate]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.gate===view.gate)));
+      root.querySelectorAll('[data-count]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.count)===view.count)));
+      $('.bs-legend').style.gridTemplateColumns=`repeat(${view.count},minmax(0,1fr))`;
+      $('.bs-legend').innerHTML=probes.slice(0,view.count).map(p=>{const end=rotate(p.v,g.axis,g.angle),v=rotate(p.v,g.axis,g.angle*view.t),fixed=end.every((n,i)=>Math.abs(n-p.v[i])<1e-8);return `<div class="bs-probe-row" style="--probe:${p.color}"><span class="bs-probe-name">${p.id}</span><span class="bs-state-label">${p.label} → ${endpointLabel(end)}</span><span class="bs-probability" aria-label="Probability of measuring zero: ${Math.round((1+v[2])*50)} percent">0: ${Math.round((1+v[2])*50)}%</span></div>`;}).join('');
+    }
+    function play(){if(playing){stop();draw();return;}view.t=0;playing=true;const start=performance.now(),duration=1800;const reduced=globalThis.matchMedia?.('(prefers-reduced-motion: reduce)').matches;if(reduced){view.t=1;playing=false;draw();save();$('.bs-live').textContent=view.gate+' complete. '+insight();return;}
+      function tick(now){if(!playing)return;const q=Math.max(0,Math.min(1,(now-start)/duration));view.t=q*q*(3-2*q);if(q>=1)playing=false;draw();if(playing)frame=requestAnimationFrame(tick);else{save();$('.bs-live').textContent=view.gate+' complete. '+insight();}}frame=requestAnimationFrame(tick);
+    }
+    root.addEventListener('click',e=>{const b=e.target.closest('button');if(!b||!root.contains(b))return;if(b.dataset.gate){stop();view.gate=b.dataset.gate;view.t=0;draw();save();$('.bs-live').textContent=gates[view.gate].label+'. '+insight();}else if(b.dataset.count){stop();view.count=Number(b.dataset.count);draw();save();}else if(b.dataset.action==='play')play();});
+    $('.bs-progress').addEventListener('input',e=>{stop();view.t=Number(e.target.value)/100;draw();});$('.bs-progress').addEventListener('change',()=>{save();$('.bs-live').textContent=Math.round(view.t*100)+' percent through '+view.gate;});
+    svg.addEventListener('pointerdown',e=>{if(e.button!==0)return;drag={x:e.clientX,y:e.clientY,az:view.az,el:view.el,id:e.pointerId};svg.setPointerCapture?.(e.pointerId);});
+    svg.addEventListener('pointermove',e=>{if(!drag||e.pointerId!==drag.id)return;view.az=drag.az-(e.clientX-drag.x)*.009;view.el=Math.max(-1.15,Math.min(1.15,drag.el+(e.clientY-drag.y)*.008));draw();});
+    for(const event of ['pointerup','pointercancel'])svg.addEventListener(event,()=>{if(drag){drag=null;save();}});
+    restore(window.openai?.widgetState);draw();
+    window.addEventListener('openai:set_globals',e=>{const state=e.detail?.globals?.widgetState;if(state&&JSON.stringify(state)!==lastSnapshot){stop();restore(state);draw();}});
+    if(globalThis.ResizeObserver)new ResizeObserver(()=>{const w=Math.round(stage.getBoundingClientRect().width);if(w>0&&w!==lastWidth)draw();}).observe(stage);
+    root.preview={rotate,gates,probes,getState:()=>({...view}),getSnapshot:snapshot};
+  })();
+  </script>
+</div>
